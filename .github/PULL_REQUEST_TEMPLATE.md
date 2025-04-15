@@ -1,4 +1,7 @@
-<!-- N/A -> Not Applicable  -->
+<!--
+Please read the Project Best Practices before open the PR: https://github.com/Mangito/Saltborn/wiki/Project-Best-Practices
+N/A -> Not Applicable
+-->
 
 ### Description
 
