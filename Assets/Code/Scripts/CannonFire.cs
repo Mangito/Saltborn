@@ -8,7 +8,7 @@ public class CannonFire : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))  // it's set to fire with the left mouse button
+        if (Input.GetMouseButtonDown(0))
         {
             FireCannon();
         }
