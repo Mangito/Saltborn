@@ -9,15 +9,8 @@ public class CannonFire : MonoBehaviour
 
     public float firingForce = 5000f;
 
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            FireCannon();
-        }
-    }
 
-    void FireCannon()
+    public void FireCannon()
     {
         GameObject cannonball = Instantiate(cannonballPrefab, firingPoint.position, firingPoint.rotation, cannonballParent);
         Rigidbody rb = cannonball.GetComponent<Rigidbody>();
