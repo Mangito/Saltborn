@@ -1,14 +1,14 @@
 using UnityEngine;
 
-public class CannonFire : MonoBehaviour
+public class CannonFire : MonoBehaviour, IShipWeapon
 {
-    public GameObject cannonballPrefab;
-    
-    public Transform firingPoint;
+    [SerializeField] private GameObject cannonballPrefab;
 
-    public Transform cannonballParent;
+    [SerializeField] private Transform firingPoint;
 
-    public float firingForce = 5000f;
+    [SerializeField] private Transform cannonballParent;
+
+    [SerializeField] private float firingForce = 5000f;
 
 
     public void FireCannon()
@@ -19,5 +19,10 @@ public class CannonFire : MonoBehaviour
         {
             rb.AddForce(firingPoint.forward * firingForce);
         }
+    }
+
+    public void Fire()
+    {
+        FireCannon();
     }
 }
