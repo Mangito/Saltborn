@@ -127,18 +127,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1007889767797505101, guid: 6a08d1b43d4dd6a4f93a6bcab2c54593, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 7.58
-      objectReference: {fileID: 0}
-    - target: {fileID: 4685085328460263495, guid: 6a08d1b43d4dd6a4f93a6bcab2c54593, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.27
-      objectReference: {fileID: 0}
-    - target: {fileID: 4685085328460263495, guid: 6a08d1b43d4dd6a4f93a6bcab2c54593, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.32
-      objectReference: {fileID: 0}
     - target: {fileID: 6097758112574197104, guid: 6a08d1b43d4dd6a4f93a6bcab2c54593, type: 3}
       propertyPath: m_IsTrigger
       value: 0
@@ -198,7 +186,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7836053894381382209, guid: 6a08d1b43d4dd6a4f93a6bcab2c54593, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1294154801}
   m_SourcePrefab: {fileID: 100100000, guid: 6a08d1b43d4dd6a4f93a6bcab2c54593, type: 3}
 --- !u!1 &391880615
 GameObject:
@@ -458,6 +449,27 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!1 &1294154800 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7836053894381382209, guid: 6a08d1b43d4dd6a4f93a6bcab2c54593, type: 3}
+  m_PrefabInstance: {fileID: 258709858}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1294154801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294154800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c50d48bf5c2b9f4891c234c5860b5d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thrustForce: 15
+  turnSpeed: 50
+  maxSpeed: 20
+  waterDrag: 1
 --- !u!1 &1730762075
 GameObject:
   m_ObjectHideFlags: 0
