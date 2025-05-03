@@ -11,6 +11,9 @@ public class ShipMovement : MonoBehaviour
 
     private Rigidbody rb;
 
+    private float moveInput;
+    private float turnInput;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -20,11 +23,14 @@ public class ShipMovement : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
 
+    void Update()
+    {
+        moveInput = Input.GetAxis("Vertical");
+        turnInput = Input.GetAxis("Horizontal");
+    }
+
     void FixedUpdate()
     {
-        float moveInput = Input.GetAxis("Vertical");
-        float turnInput = Input.GetAxis("Horizontal");
-
         Vector3 shipForward = -transform.right;
 
         if (rb.linearVelocity.magnitude < maxSpeed)
