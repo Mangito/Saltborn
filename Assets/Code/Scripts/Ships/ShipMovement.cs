@@ -4,10 +4,10 @@ using UnityEngine;
 public class ShipMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float thrustForce = 15f;
-    public float turnSpeed = 50f;
-    public float maxSpeed = 10f;
-    public float waterDrag = 2f;
+    [SerializeField] private float thrustForce = 15f;
+    [SerializeField] private float turnSpeed = 50f;
+    [SerializeField] private float maxSpeed = 10f;
+    [SerializeField] private float waterDrag = 2f;
 
     private Rigidbody rb;
 
