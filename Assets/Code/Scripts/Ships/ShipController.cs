@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class ShipMovement : MonoBehaviour
+public class ShipController : MonoBehaviour
 {
     [Header("Movement Settings")]
     [SerializeField] private float thrustForce = 15f;
