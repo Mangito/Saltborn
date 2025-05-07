@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0686209e1bcb14124ac6e6274b9263a8
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Samples~/Examples/Audio/License.txt
+  uploadId: 752071

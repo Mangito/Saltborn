@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 01a78af7295034dfbb3e00d6dfec64e3
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Shared/Effects/LensFlares/Flares/Sun.asset
+  uploadId: 752071

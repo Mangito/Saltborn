@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 55a9b76c48b7343b2b66ed91a0619c29
+ComputeShaderImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Runtime/Shaders/Data/Input/Hidden/JumpFloodSDF.compute
+  uploadId: 752071

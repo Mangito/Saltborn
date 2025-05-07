@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: b6d1a5ea192714d488d3edff0cdfc51f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Runtime/Scripts/Time/CutsceneTimeProvider.cs
+  uploadId: 752071

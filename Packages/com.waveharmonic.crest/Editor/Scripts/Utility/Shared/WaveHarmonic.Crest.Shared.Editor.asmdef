@@ -1,0 +1,23 @@
+{
+    "name": "WaveHarmonic.Crest.Shared.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:056ff2a5b2f124d468c6655552acdca5",
+        "GUID:3eae0364be2026648bf74846acb8a731",
+        "GUID:df380645f10b7bc4b97d4f5eb6303d95",
+        "GUID:be0903cd8e1546f498710afdc59db5eb"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_2022_3_OR_NEWER"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

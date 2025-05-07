@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 01b6d2d72f0e04b0abc7d62cfc8b5355
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Samples~/Boats/Settings/Boats_Lod_Foam.asset
+  uploadId: 752071

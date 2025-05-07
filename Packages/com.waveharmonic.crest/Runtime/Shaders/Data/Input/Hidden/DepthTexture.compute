@@ -1,0 +1,69 @@
+// Crest Water System
+// Copyright © 2024 Wave Harmonic. All rights reserved.
+
+// Draw cached world-space heights into current frame data. If heights are coming
+// from an ODC, then they are in object-space and are converted to world-space as
+// the LOD data stores world-space height.
+
+#pragma kernel CrestExecute
+
+#pragma multi_compile_local __ d_CrestSDF
+
+#include "HLSLSupport.cginc"
+
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Macros.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Constants.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Globals.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Helpers.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/InputsDriven.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Cascade.hlsl"
+
+#define m_CrestType float
+
+#if d_CrestSDF
+#undef m_CrestType
+#define m_CrestType float2
+#endif
+
+Texture2D<m_CrestType> _Crest_Texture;
+RWTexture2DArray<m_CrestType> _Crest_Target;
+
+CBUFFER_START(CrestInputTexture)
+float2 _Crest_TextureSize;
+float2 _Crest_TexturePosition;
+float2 _Crest_TextureRotation;
+float _Crest_HeightOffset;
+bool _Crest_SDF;
+CBUFFER_END
+
+m_CrestNameSpace
+
+void Execute(uint3 id)
+{
+    const Cascade cascade = Cascade::MakeDepth(id.z);
+    const float2 uv = DataIDToInputUV(id.xy, cascade, _Crest_TexturePosition, _Crest_TextureRotation, _Crest_TextureSize);
+
+    // Check we are within bounds.
+    if (!WithinUV(uv))
+    {
+        return;
+    }
+
+    m_CrestType current = _Crest_Target[id];
+    m_CrestType result = _Crest_Texture.SampleLevel(LODData_linear_clamp_sampler, uv, 0);
+    result.x += _Crest_HeightOffset;
+
+    // Take highest terrain height.
+    result.x = max(current.x, result.x);
+
+#if d_CrestSDF
+    // Take shortest distance.
+    result.y = _Crest_SDF ? min(current.y, result.y) : current.y;
+#endif
+
+    _Crest_Target[id] = result;
+}
+
+m_CrestNameSpaceEnd
+
+m_CrestInputKernelDefault(Execute)

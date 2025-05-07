@@ -1,0 +1,48 @@
+{
+    "name": "com.waveharmonic.crest",
+    "version": "5.4.2",
+    "displayName": "Crest",
+    "description": "An advanced water system for Unity.",
+    "unity": "2022.3",
+    "unityRelease": "21f1",
+    "hideInEditor": false,
+    "documentationUrl": "https://docs.crest.waveharmonic.com/About/Introduction.html",
+    "changelogUrl": "https://docs.crest.waveharmonic.com/About/History.html",
+    "author": {
+        "name": "Wave Harmonic",
+        "email": "support@waveharmonic.com",
+        "url": "https://waveharmonic.com/"
+    },
+    "keywords": [],
+    "samples": [
+        {
+            "displayName": "Main",
+            "description": "A simple sample scene",
+            "path": "Samples~/Main"
+        },
+        {
+            "displayName": "Examples",
+            "description": "Contains several examples of less common use cases in one scene. Highly recommended.",
+            "path": "Samples~/Examples"
+        },
+        {
+            "displayName": "Ripples",
+            "description": "An example of manipulating inputs to generate dynamic ripples.",
+            "path": "Samples~/Ripples"
+        },
+        {
+            "displayName": "Wakes",
+            "description": "Demonstrates wakes using the Sphere Water Interaction.",
+            "path": "Samples~/Wakes"
+        },
+        {
+          "displayName": "Boats",
+          "description": "Simple examples using boats.",
+          "path": "Samples~/Boats"
+        }
+    ],
+    "dependencies": {
+        "com.unity.render-pipelines.core": "14.0.11",
+        "com.unity.shadergraph": "14.0.11"
+    }
+}

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: c358b569712814645b33be93fdc16c4d
+AssemblyDefinitionReferenceImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Runtime/Scripts/Utility/Bridges/Unity.RenderPipelines.HighDefinition/Runtime/WaveHarmonic.Crest.Bridge.asmref
+  uploadId: 752071

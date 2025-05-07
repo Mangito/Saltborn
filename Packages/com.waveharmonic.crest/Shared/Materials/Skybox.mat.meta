@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9dbeaf053c6fb4c2f93b45a9995c408e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Shared/Materials/Skybox.mat
+  uploadId: 752071

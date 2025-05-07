@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fbe311c1027b04a3d8401654d4a9d72f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Runtime/Materials/Inputs/PushWaterUnderConvexHull.mat
+  uploadId: 752071

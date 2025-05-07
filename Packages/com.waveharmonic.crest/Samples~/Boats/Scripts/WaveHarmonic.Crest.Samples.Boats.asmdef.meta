@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b764708e9f9f5422cb50bbec2bdf0c0e
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Samples~/Boats/Scripts/WaveHarmonic.Crest.Samples.Boats.asmdef
+  uploadId: 752071

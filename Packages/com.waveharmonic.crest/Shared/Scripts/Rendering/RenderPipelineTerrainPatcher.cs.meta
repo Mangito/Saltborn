@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: e49c7e9e3297f44b3a07573b45ec815d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _Material: {fileID: 10650, guid: 0000000000000000f000000000000000, type: 0}
+  - _MaterialHDRP: {fileID: 2100000, guid: 22ff8771d87ef27429e670136399094b, type: 2}
+  - _MaterialURP: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Shared/Scripts/Rendering/RenderPipelineTerrainPatcher.cs
+  uploadId: 752071

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 1f89b1c7604634513b0fdd493a0fca4c
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Samples~/Examples/Prefabs/Scenes/Examples_AudioFromSurfaceDistance.prefab
+  uploadId: 752071

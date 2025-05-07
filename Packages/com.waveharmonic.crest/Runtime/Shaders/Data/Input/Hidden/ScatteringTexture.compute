@@ -1,0 +1,54 @@
+// Crest Water System
+// Copyright © 2024 Wave Harmonic. All rights reserved.
+
+#pragma kernel CrestExecute
+
+#include "HLSLSupport.cginc"
+
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Macros.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Constants.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Globals.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Helpers.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/InputsDriven.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Cascade.hlsl"
+
+Texture2D _Crest_Texture;
+RWTexture2DArray<float3> _Crest_Target;
+
+CBUFFER_START(CrestPerMaterial)
+int _Crest_Blend;
+float _Crest_Weight;
+float2 _Crest_TextureSize;
+float2 _Crest_TexturePosition;
+float2 _Crest_TextureRotation;
+float _Crest_FeatherWidth;
+CBUFFER_END
+
+m_CrestNameSpace
+
+void Execute(uint3 id)
+{
+    const Cascade cascade = Cascade::MakeScattering(id.z);
+    const float2 uv = DataIDToInputUV(id.xy, cascade, _Crest_TexturePosition, _Crest_TextureRotation, _Crest_TextureSize);
+
+    half weight = _Crest_Weight;
+
+    // Feather boundaries.
+    weight *= FeatherWeightFromUV(uv, _Crest_FeatherWidth);
+
+    // Check we are within bounds.
+    if (weight <= 0.0)
+    {
+        return;
+    }
+
+    const half4 source = _Crest_Texture.SampleLevel(LODData_linear_clamp_sampler, uv, 0);
+    const half3 target = _Crest_Target[id];
+    weight *= source.a;
+
+    _Crest_Target[id] = Blend(_Crest_Blend, weight, 1.0, source.xyz, target);
+}
+
+m_CrestNameSpaceEnd
+
+m_CrestInputKernelDefault(Execute)

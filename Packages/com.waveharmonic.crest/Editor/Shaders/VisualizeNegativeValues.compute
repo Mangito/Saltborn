@@ -1,0 +1,34 @@
+﻿// Crest Water System
+// Copyright © 2024 Wave Harmonic. All rights reserved.
+
+#pragma kernel CrestVisualizeNegativeValues_Scalar
+#pragma kernel CrestVisualizeNegativeValues_Array _ARRAY
+
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Utility/Macros.hlsl"
+
+#ifdef _ARRAY
+#define d_RWTexture RWTexture2DArray
+#else
+#define d_RWTexture RWTexture2D
+#endif
+
+#ifdef _ARRAY
+#define d_RWTextureCoordinates(id) id
+#else
+#define d_RWTextureCoordinates(id) id.xy
+#endif
+
+d_RWTexture<float4> _Crest_Target;
+
+m_UtilityNameSpace
+
+void VisualizeNegativeValues(uint3 id)
+{
+    _Crest_Target[d_RWTextureCoordinates(id)] += 1.0;
+    _Crest_Target[d_RWTextureCoordinates(id)] *= 0.5;
+}
+
+m_UtilityNameSpaceEnd
+
+m_UtilityKernelDefaultVariant(VisualizeNegativeValues, _Scalar)
+m_UtilityKernelDefaultVariant(VisualizeNegativeValues, _Array)

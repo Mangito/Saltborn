@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8a46562f9ff954d159455b01470f91ad
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Shared/Materials/Grey.mat
+  uploadId: 752071

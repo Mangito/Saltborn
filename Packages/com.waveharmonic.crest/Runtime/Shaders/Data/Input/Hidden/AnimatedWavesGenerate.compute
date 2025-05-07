@@ -1,0 +1,248 @@
+// Crest Water System
+// Copyright © 2024 Wave Harmonic. All rights reserved.
+
+#pragma kernel CrestTransferWaves
+
+#pragma multi_compile_local __ d_Texture d_TextureBlend
+
+#if defined(d_TextureBlend)
+#define d_Texture 1
+#endif
+
+#include "HLSLSupport.cginc"
+
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Macros.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Constants.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Globals.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Helpers.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/InputsDriven.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Cascade.hlsl"
+
+Texture2D _Crest_Texture;
+Texture2DArray _Crest_WaveBuffer;
+RWTexture2DArray<float4> _Crest_Target;
+
+CBUFFER_START(CrestPerMaterial)
+float4 _Crest_WaveBufferParameters[MAX_LOD_COUNT];
+float2 _Crest_AxisX;
+float _Crest_Weight;
+float _Crest_FeatherWidth;
+float _Crest_AttenuationInShallows;
+float _Crest_RespectShallowWaterAttenuation;
+float _Crest_MaximumAttenuationDepth;
+float _Crest_WaveResolutionMultiplier;
+float _Crest_TransitionalWavelengthThreshold;
+
+// Texture
+#if d_Texture
+float2 _Crest_TextureSize;
+float2 _Crest_TexturePosition;
+float2 _Crest_TextureRotation;
+bool _Crest_NegativeValues;
+int _Crest_Blend;
+#endif
+CBUFFER_END
+
+#if d_Texture
+#define m_None 0
+#define m_FromZero 4
+#define m_FromZeroNormalized 5
+#endif // d_Texture
+
+m_CrestNameSpace
+
+void TransferWaves(uint3 id)
+{
+    const uint slice0 = id.z;
+
+    const float4 parameters = _Crest_WaveBufferParameters[slice0];
+    const uint first = parameters.x;
+    const uint last = parameters.y;
+    const half transition = parameters.w;
+
+#if !d_TextureBlend
+    // Additive only. All wavelengths filtered out for this LOD so nothing to do.
+    if (parameters.x < 0 || parameters.y < 0)
+    {
+        return;
+    }
+#endif
+
+    const Cascade cascade = Cascade::MakeAnimatedWaves(slice0);
+    const float2 positionWS = cascade.IDToWorld(id.xy);
+
+    half _weight = _Crest_Weight;
+    half alpha = 0.0;
+
+#if d_Texture
+    float2 uvPainted = (positionWS - _Crest_TexturePosition) / _Crest_TextureSize;
+    // Clockwise transform rotation.
+    uvPainted = uvPainted.x * float2(_Crest_TextureRotation.y, -_Crest_TextureRotation.x) + uvPainted.y * _Crest_TextureRotation;
+    uvPainted += 0.5;
+
+    // Feather boundaries.
+    _weight *= FeatherWeightFromUV(uvPainted, _Crest_FeatherWidth);
+
+    // Check we are within bounds.
+    if (_weight <= 0.0)
+    {
+        return;
+    }
+
+    alpha = _weight;
+
+    // Initialize or "use of potentially uninitialized variable" due to early return.
+    float2 axis; float axisLength = 0.0; float t = 0.0;
+    float2 axisX0 = 0.0; float2 axisX1 = 0.0; float2 axisZ0 = 0.0; float2 axisZ1 = 0.0;
+    {
+        axis = _Crest_Texture.SampleLevel(LODData_linear_clamp_sampler, uvPainted, 0).xy;
+
+        if (!_Crest_NegativeValues)
+        {
+            // -1.0 to 1.0
+            axis = axis * 2.0 - 1.0;
+        }
+
+        float axisLength2 = dot(axis, axis);
+
+        // Zero data so exit early and apply blending if needed.
+        if (!(axisLength2 > 0.00001))
+        {
+#if d_TextureBlend
+            if (_Crest_Blend > m_None)
+            {
+                // If zero affects blend weight, then reduce alpha by axis length so that it
+                // accounts for zero data.
+                alpha = 0.0;
+            }
+
+            _Crest_Target[id] *= 1.0 - alpha;
+#endif
+            return;
+        }
+
+        axisLength = sqrt(axisLength2);
+
+        // Alpha blending based on data.
+        if (_Crest_Blend == m_FromZeroNormalized)
+        {
+            // Normalize so even small amounts fully removes existing waves.
+            alpha *= length(normalize(axis));
+        }
+        else if (_Crest_Blend == m_FromZero)
+        {
+            alpha *= axisLength;
+        }
+
+        // Rotate axis with transform rotation to keep axis in local space.
+        axis = axis.x * _Crest_TextureRotation.yx + axis.y * float2(-_Crest_TextureRotation.x, _Crest_TextureRotation.y);
+
+        // Add wind (counterclockwise).
+        axis = axis.x * _Crest_AxisX + axis.y * float2(-_Crest_AxisX.y, _Crest_AxisX.x);
+
+        // Quantize wave direction.
+        const float axisHeading = atan2(axis.y, axis.x) + 2.0 * 3.141592654;
+        const float dTheta = 0.5 * 0.314159265;
+        const float rem = fmod(axisHeading, dTheta);
+        const float angle0 = axisHeading - rem;
+        const float angle1 = angle0 + dTheta;
+        t = rem / dTheta;
+
+        sincos(angle0, axisX0.y, axisX0.x);
+        sincos(angle1, axisX1.y, axisX1.x);
+        axisZ0.x = -axisX0.y; axisZ0.y = axisX0.x;
+        axisZ1.x = -axisX1.y; axisZ1.y = axisX1.x;
+    }
+#else
+    const float2 positionWaves = float2(dot(positionWS, _Crest_AxisX), dot(positionWS, float2(-_Crest_AxisX.y, _Crest_AxisX.x)));
+#endif // d_Texture
+
+    const half depth = Cascade::MakeDepth(slice0).SampleSignedDepthFromSeaLevel(positionWS) +
+        Cascade::MakeLevel(slice0).SampleLevel(positionWS);
+
+    half3 _displacement = 0.0;
+
+    // Loop through wave buffer slices.
+    for (uint i = first; i <= last; i++)
+    {
+        const uint waveBufferIndex = i;
+        const float waveBufferSize = 0.5f * (1 << waveBufferIndex);
+
+        half weight = _weight;
+
+        uint WAVE_SAMPLE_FACTOR = 8;
+        half minimumWL = waveBufferSize / WAVE_SAMPLE_FACTOR / _Crest_WaveResolutionMultiplier;
+        half averageWL = minimumWL * 1.5f * _Crest_WaveResolutionMultiplier;
+
+        // If approaching end of lod chain, start smoothly transitioning any large
+        // wavelengths across last two LODs.
+        if (minimumWL >= _Crest_TransitionalWavelengthThreshold)
+        {
+            // The transition weight must not be applied to the alpha otherwise popping.
+            weight *= transition;
+        }
+
+        // Attenuation.
+        float attenuation;
+        {
+            // Attenuate waves based on water depth. If depth is greater than half the
+            // wavelength, water is considered deep and wave is unaffected. If depth is less
+            // than this, wave velocity decreases. Waves will then bunch up and grow in
+            // amplitude and eventually break. Deep water model is approximated by simply
+            // ramping down waves in non-deep water with a linear multiplier.
+            // http://hyperphysics.phy-astr.gsu.edu/hbase/Waves/watwav2.html
+            // http://hyperphysics.phy-astr.gsu.edu/hbase/watwav.html#c1
+            half weight = saturate(2.0 * depth / averageWL);
+            if (_Crest_MaximumAttenuationDepth < k_Crest_MaximumWaveAttenuationDepth)
+            {
+                weight = lerp(weight, 1.0, saturate(depth / _Crest_MaximumAttenuationDepth));
+            }
+
+
+            const float attenuationAmount = _Crest_AttenuationInShallows * _Crest_RespectShallowWaterAttenuation;
+            attenuation = attenuationAmount * weight + (1.0 - attenuationAmount);
+        }
+
+        // NOTE: Could not get attenuation applied to alpha to work. Incurred popping.
+        weight *= attenuation;
+
+        // Sample Wave Buffers.
+        if (weight > 0.0)
+        {
+#if d_Texture
+            // Interpolate waves.
+            float2 positionScaledWS = positionWS / waveBufferSize;
+
+            const float2 uv0 = float2(dot(positionScaledWS, axisX0), dot(positionScaledWS, axisZ0));
+            const float2 uv1 = float2(dot(positionScaledWS, axisX1), dot(positionScaledWS, axisZ1));
+
+            // Sample displacement, rotate into frame.
+            float3 displacement0 = _Crest_WaveBuffer.SampleLevel(sampler_Crest_linear_repeat, float3(uv0, waveBufferIndex), 0).xyz;
+            float3 displacement1 = _Crest_WaveBuffer.SampleLevel(sampler_Crest_linear_repeat, float3(uv1, waveBufferIndex), 0).xyz;
+
+            float3 displacement = lerp(displacement0, displacement1, t);
+            displacement.xz = displacement.x * axis + displacement.z * float2(-axis.y, axis.x);
+            displacement.y *= axisLength;
+            _displacement += displacement * weight;
+
+#else // !d_Texture
+            // Sample displacement, rotate into frame defined by global wind direction.
+            half3 displacement = _Crest_WaveBuffer.SampleLevel(sampler_Crest_linear_repeat, float3(positionWaves / waveBufferSize, waveBufferIndex), 0).xyz;
+            displacement.xz = displacement.x * _Crest_AxisX + displacement.z * float2(-_Crest_AxisX.y, _Crest_AxisX.x);
+            _displacement += displacement * weight;
+#endif // d_Texture
+        }
+    }
+
+#if d_TextureBlend
+    // Global waves are always additive.
+    _Crest_Target[id] *= 1.0 - saturate(alpha);
+#endif
+
+    // Always write full alpha so textures show up in previews.
+    _Crest_Target[id] += float4(_displacement, 1.0);
+}
+
+m_CrestNameSpaceEnd
+
+m_CrestInputKernelDefault(TransferWaves)

@@ -1,0 +1,154 @@
+﻿// Crest Water System
+// Copyright © 2024 Wave Harmonic. All rights reserved.
+
+// An implementation of the Jump Flood algorithm by Rong and Tan
+// Source: https://www.comp.nus.edu.sg/~tants/jfa.html
+
+#pragma kernel CrestInitialize
+#pragma kernel CrestExecute
+#pragma kernel CrestApply
+
+#pragma multi_compile_local __ d_Crest_Inverted
+#pragma multi_compile_local __ d_Crest_Standalone
+
+#include "HLSLSupport.cginc"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Constants.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Macros.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Globals.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Helpers.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Cascade.hlsl"
+
+CBUFFER_START(CrestPerMaterial)
+uint _Crest_JumpSize;
+uint _Crest_TextureSize;
+float4x4 _Crest_ProjectionToWorld;
+float _Crest_HeightOffset;
+float _Crest_WaterLevel;
+CBUFFER_END
+
+// Holds scene depth for initialization.
+Texture2D<float2> _Crest_Source;
+RWTexture2D<float2> _Crest_Target;
+
+// Setting this to zero means that geometry at exactly the origin won't be handled
+// gracefully - but it would only affect a single-pixel in the worst-case and would
+// doubtfully be noticable anyway. Use infinity instead.
+#define m_CrestUninitializedPosition float2(m_Crest_PositiveInfinity, m_Crest_PositiveInfinity)
+
+#if d_Crest_Inverted
+#define m_DepthCheck depth > 0.0
+#else
+#define m_DepthCheck depth <= 0.0
+#endif
+
+m_CrestNameSpace
+
+bool IsUninitializedPosition(const float2 position)
+{
+    return isinf(position.x);
+}
+
+float2 IDtoWorld(const uint2 id, const float resolution, const float4x4 projectionToWorld)
+{
+    float2 uv = (((id + 0.5) / resolution) - 0.5) * 2.0;
+    return mul(projectionToWorld, float4(uv, 0.0, 1.0)).xz;
+}
+
+void Initialize(const uint3 id)
+{
+    float2 position = IDtoWorld(id.xy, _Crest_TextureSize, _Crest_ProjectionToWorld);
+    float depth = _Crest_WaterLevel - (_Crest_Source[id.xy].x + _Crest_HeightOffset);
+
+#ifndef d_Crest_Standalone
+    // Add height offset.
+    uint slice0; uint slice1; float alpha;
+    PosToSliceIndices(position, 0, g_Crest_LodCount - 1, g_Crest_WaterScale, slice0, slice1, alpha);
+    depth += lerp(Cascade::MakeLevel(slice0).SampleLevel(position), Cascade::MakeLevel(slice1).SampleLevel(position), alpha);
+#endif
+
+    _Crest_Target[id.xy] = m_DepthCheck ? position : m_CrestUninitializedPosition;
+}
+
+void Execute(const uint3 id)
+{
+    float2 nearest = _Crest_Source[id.xy];
+
+    const uint3 jump = uint3(_Crest_JumpSize, -(int)_Crest_JumpSize, 0);
+    const bool xBounds = _Crest_TextureSize - _Crest_JumpSize > id.x;
+    const bool yBounds = _Crest_TextureSize - _Crest_JumpSize > id.y;
+    const bool zBounds = id.x >= _Crest_JumpSize;
+    const bool wBounds = id.y >= _Crest_JumpSize;
+
+    float2 candidates[8];
+    candidates[0] = yBounds            ? _Crest_Source[id.xy + jump.zx] : nearest;
+    candidates[1] = yBounds && xBounds ? _Crest_Source[id.xy + jump.xx] : nearest;
+    candidates[2] = xBounds            ? _Crest_Source[id.xy + jump.xz] : nearest;
+    candidates[3] = xBounds && wBounds ? _Crest_Source[id.xy + jump.xy] : nearest;
+    candidates[4] = wBounds            ? _Crest_Source[id.xy + jump.zy] : nearest;
+    candidates[5] = wBounds && zBounds ? _Crest_Source[id.xy + jump.yy] : nearest;
+    candidates[6] = zBounds            ? _Crest_Source[id.xy + jump.yz] : nearest;
+    candidates[7] = zBounds && yBounds ? _Crest_Source[id.xy + jump.yx] : nearest;
+
+    const float2 position = IDtoWorld(id.xy, _Crest_TextureSize, _Crest_ProjectionToWorld);
+    const float2 displacement = nearest - position;
+    float distance2 = dot(displacement, displacement);
+
+    for (uint i = 0; i < 8; i++)
+    {
+        if (IsUninitializedPosition(nearest))
+        {
+            nearest = candidates[i];
+            continue;
+        }
+
+        const float2 candidateDisplacement = candidates[i] - position;
+        const float candidateDistance2 = dot(candidateDisplacement, candidateDisplacement);
+
+        if (candidateDistance2 < distance2)
+        {
+            nearest = candidates[i];
+            distance2 = candidateDistance2;
+        }
+    }
+
+    _Crest_Target[id.xy] = nearest;
+}
+
+void Apply(const uint3 id)
+{
+    float2 result = _Crest_Target[id.xy];
+    float2 position = IDtoWorld(id.xy, _Crest_TextureSize, _Crest_ProjectionToWorld);
+
+#if d_Crest_Inverted
+    float depth = _Crest_WaterLevel - (result.x + _Crest_HeightOffset);
+
+#ifndef d_Crest_Standalone
+    // Get depth including height offset.
+    uint slice0; uint slice1; float alpha;
+    PosToSliceIndices(position, 0, g_Crest_LodCount - 1, g_Crest_WaterScale, slice0, slice1, alpha);
+    depth += lerp(Cascade::MakeLevel(slice0).SampleLevel(position), Cascade::MakeLevel(slice1).SampleLevel(position), alpha);
+#endif
+
+    // Do not overwrite positive SDF.
+    if (depth > 0) return;
+#endif
+
+    float2 nearest = _Crest_Source[id.xy];
+    float2 displacement = nearest - position;
+
+    float distance = length(displacement);
+
+#if d_Crest_Inverted
+    distance = -distance;
+#endif
+
+    result.y = distance;
+
+    _Crest_Target[id.xy] = result;
+}
+
+m_CrestNameSpaceEnd
+
+m_CrestKernelDefault(Initialize)
+m_CrestKernelDefault(Execute)
+m_CrestKernelDefault(Apply)

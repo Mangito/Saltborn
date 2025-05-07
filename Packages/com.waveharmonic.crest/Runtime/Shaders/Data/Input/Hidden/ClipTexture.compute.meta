@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: fb559b0e067b5464792b8e434189347c
+ComputeShaderImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Runtime/Shaders/Data/Input/Hidden/ClipTexture.compute
+  uploadId: 752071

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 1f5d1e029c7564da8855bf97e3b9247a
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Runtime/Shaders/Data/Input/Hidden/ClipConvexHull.shader
+  uploadId: 752071

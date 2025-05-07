@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Examples_Absorption
+  m_Shader: {fileID: 4800000, guid: 9a866ef153cd246c58ef554043275848, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - d_Feather
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints:
+    - _Crest_Version: 0
+    m_Floats:
+    - _Crest_Feather: 1
+    - _Crest_FeatherWidth: 0.1
+    m_Colors:
+    - _Crest_Absorption: {r: 0.70172215, g: 0.13051344, b: 0.10529934, a: 1}
+    - _Crest_AbsorptionColor: {r: 0.3411765, g: 0.8187262, b: 0.8509804, a: 0.101960786}
+  m_BuildTextureStacks: []

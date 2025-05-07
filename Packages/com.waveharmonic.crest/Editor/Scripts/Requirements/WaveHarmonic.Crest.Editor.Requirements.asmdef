@@ -1,0 +1,52 @@
+{
+    "name": "WaveHarmonic.Crest.Editor.Dependents",
+    "rootNamespace": "",
+    "references": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.waveharmonic.crest.cpu-queries",
+            "expression": "(,1.0.4)",
+            "define": "d_UpdateCPUQueries"
+        },
+        {
+            "name": "com.waveharmonic.crest.paint",
+            "expression": "(,1.2.0)",
+            "define": "d_UpdatePaint"
+        },
+        {
+            "name": "com.waveharmonic.crest.portals",
+            "expression": "(,1.2.1)",
+            "define": "d_UpdatePortals"
+        },
+        {
+            "name": "com.waveharmonic.crest.shallow-water",
+            "expression": "(,1.3.1)",
+            "define": "d_UpdateShallowWater"
+        },
+        {
+            "name": "com.waveharmonic.crest.shifting-origin",
+            "expression": "(,1.2.1)",
+            "define": "d_UpdateShiftingOrigin"
+        },
+        {
+            "name": "com.waveharmonic.crest.splines",
+            "expression": "(,1.3.2)",
+            "define": "d_UpdateSplines"
+        },
+        {
+            "name": "com.waveharmonic.crest.whirlpool",
+            "expression": "(,1.0.1)",
+            "define": "d_UpdateWhirlpool"
+        }
+    ],
+    "noEngineReferences": false
+}

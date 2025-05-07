@@ -1,0 +1,128 @@
+// Crest Water System
+// Copyright © 2024 Wave Harmonic. All rights reserved.
+
+// Copies the depth buffer into the cache as object-space height. Object-space is
+// used instead of world-space to allow relative movement of baked depth caches
+// afterwards. It is converted to world-space in another shader before writing into
+// the LOD data.
+
+#pragma kernel CrestCopy
+#pragma kernel CrestFill
+
+#pragma multi_compile_local __ d_Crest_BackFaceInclusion
+
+#include "HLSLSupport.cginc"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Constants.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Macros.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Globals.hlsl"
+
+Texture2D<float> _CamDepthBuffer;
+RWTexture2D<float2> _Crest_Target;
+
+#if d_Crest_BackFaceInclusion
+Texture2D<float> _Crest_CameraDepthBufferBackfaces;
+#endif
+
+CBUFFER_START(CrestPerMaterial)
+float4 _HeightNearHeightFar;
+float4 _CustomZBufferParams;
+float  _HeightOffset;
+float  _Crest_PreviousPlane;
+CBUFFER_END
+
+m_CrestNameSpace
+
+float CustomLinear01Depth(const float z)
+{
+    return (1.0 - z * _CustomZBufferParams.x) / _CustomZBufferParams.y;
+}
+
+void Copy(const uint3 id)
+{
+    const float deviceDepth = _CamDepthBuffer[id.xy].x;
+
+    // If geometry has been clipped by far plane, set the maximum depth.
+    if (deviceDepth <= 0.0)
+    {
+        _Crest_Target[id.xy] = -CREST_WATER_DEPTH_BASELINE;
+        return;
+    }
+
+    const float linear01Z = CustomLinear01Depth(deviceDepth);
+
+    const float altitude =
+#if UNITY_REVERSED_Z
+        lerp(_HeightNearHeightFar.y, _HeightNearHeightFar.x, linear01Z);
+#else
+        lerp(_HeightNearHeightFar.x, _HeightNearHeightFar.y, linear01Z);
+#endif
+
+    _Crest_Target[id.xy] = altitude - _HeightOffset;
+}
+
+void Fill(const uint3 id)
+{
+    const float deviceDepth = _CamDepthBuffer[id.xy].x;
+
+#if d_Crest_BackFaceInclusion
+    const float deviceBackFaceDepth = _Crest_CameraDepthBufferBackfaces[id.xy].x;
+#endif
+
+    // If geometry has been clipped by far plane, set the maximum depth.
+    if (deviceDepth <= 0.0)
+    {
+#if d_Crest_BackFaceInclusion
+        if (deviceBackFaceDepth <= 0.0)
+#endif
+        {
+            return;
+        }
+    }
+
+    // If not a hole, do not proceed.
+    // We must be limiteed by precision on trying to represent depth baseline
+    if (_Crest_Target[id.xy].x > -CREST_WATER_DEPTH_BASELINE)
+    {
+#if d_Crest_BackFaceInclusion
+        if (deviceBackFaceDepth <= 0.0)
+#endif
+        {
+            return;
+        }
+    }
+
+    const float linear01Z = CustomLinear01Depth(deviceDepth);
+
+    const float altitude =
+#if UNITY_REVERSED_Z
+        lerp(_HeightNearHeightFar.y, _HeightNearHeightFar.x, linear01Z);
+#else
+        lerp(_HeightNearHeightFar.x, _HeightNearHeightFar.y, linear01Z);
+#endif
+
+
+#if d_Crest_BackFaceInclusion
+    {
+        const float linear01Z = CustomLinear01Depth(deviceBackFaceDepth);
+        const float altitude =
+#if UNITY_REVERSED_Z
+            lerp(_HeightNearHeightFar.y, _HeightNearHeightFar.x, linear01Z);
+#else
+            lerp(_HeightNearHeightFar.x, _HeightNearHeightFar.y, linear01Z);
+#endif
+
+        // Check backfaces.
+        if (altitude > (_Crest_PreviousPlane + 0.00001))
+        {
+            return;
+        }
+    }
+#endif
+
+    _Crest_Target[id.xy] = altitude - _HeightOffset;
+}
+
+m_CrestNameSpaceEnd
+
+m_CrestKernelDefault(Copy)
+m_CrestKernelDefault(Fill)

@@ -1,0 +1,11 @@
+Filename: Examples_WaterSurface.flac
+License: Creative Commons https://creativecommons.org/licenses/by/3.0/
+Link: https://freesound.org/s/39901/
+
+Filename: Examples_Underwater.wav
+License: Public Domain https://creativecommons.org/publicdomain/zero/1.0/
+Link: https://freesound.org/s/448460/
+
+Filename: Examples_Shoreline.flac
+License: Public Domain https://creativecommons.org/publicdomain/zero/1.0/
+Link: https://freesound.org/s/277480/

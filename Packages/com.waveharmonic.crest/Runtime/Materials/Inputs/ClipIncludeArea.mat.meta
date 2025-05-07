@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2a561aef740e74d45a7db7b9dc255dd7
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Runtime/Materials/Inputs/ClipIncludeArea.mat
+  uploadId: 752071

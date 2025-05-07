@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 5f79fd5a427da4de09803ded352ecfb1
+ShaderIncludeImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Utility/Noise/Noise.hlsl
+  uploadId: 752071

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: c26fe2b4fef6c484089497b549dd6b04
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Shared/Prefabs/Camera.prefab
+  uploadId: 752071

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 98fb0af5d79724a2c945809b974524eb
+ComputeShaderImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Runtime/Shaders/Data/Input/Hidden/SphereWaterInteraction.compute
+  uploadId: 752071

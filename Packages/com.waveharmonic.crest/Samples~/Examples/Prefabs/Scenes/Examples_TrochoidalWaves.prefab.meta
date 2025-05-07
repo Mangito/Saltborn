@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: c50867f10fd47468a888b2cad362e3f3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Samples~/Examples/Prefabs/Scenes/Examples_TrochoidalWaves.prefab
+  uploadId: 752071

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: b9836aaab4b1f45e4bd4fc4e6bcc7e74
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Runtime/Shaders/Utility/Blit.shader
+  uploadId: 752071

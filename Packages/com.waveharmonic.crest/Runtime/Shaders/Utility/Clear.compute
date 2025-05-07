@@ -1,0 +1,55 @@
+﻿// Crest Water System
+// Copyright © 2024 Wave Harmonic. All rights reserved.
+
+// Clear specific components using a mask.
+
+#pragma kernel CrestClearTarget
+#pragma kernel CrestClearTargetBoundaryX d_BoundaryX
+#pragma kernel CrestClearTargetBoundaryY d_BoundaryY
+
+#include "HLSLSupport.cginc"
+
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Utility/Macros.hlsl"
+
+RWTexture2DArray<float4> _Crest_Target;
+
+CBUFFER_START(CrestPerMaterial)
+float4 _Crest_ClearMask;
+float4 _Crest_ClearColor;
+uint _Crest_Resolution;
+uint _Crest_TargetSlice;
+CBUFFER_END
+
+#if d_BoundaryX
+#define d_Axis y
+#else
+#define d_Axis x
+#endif
+
+m_UtilityNameSpace
+
+void ClearTarget(uint3 id)
+{
+    _Crest_Target[id] *= 1.0 - _Crest_ClearMask;
+    _Crest_Target[id] += _Crest_ClearColor;
+}
+
+void ClearTargetBoundary(uint3 id)
+{
+    id.z = _Crest_TargetSlice;
+    _Crest_Target[id] = _Crest_ClearColor;
+
+    // Opposite row/column.
+    id.d_Axis = _Crest_Resolution - 1;
+    _Crest_Target[id] = _Crest_ClearColor;
+}
+
+m_UtilityNameSpaceEnd
+
+m_UtilityKernelDefault(ClearTarget)
+
+[numthreads(8, 1, 1)]
+m_UtilityKernelVariant(ClearTargetBoundary, X)
+
+[numthreads(1, 8, 1)]
+m_UtilityKernelVariant(ClearTargetBoundary, Y)

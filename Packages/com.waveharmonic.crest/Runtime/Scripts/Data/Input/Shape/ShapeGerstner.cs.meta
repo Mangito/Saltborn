@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 002f2642204d348f3a2fab18595c44cd
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _rasterMesh: {instanceID: 0}
+  - _spectrum: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Runtime/Scripts/Data/Input/Shape/ShapeGerstner.cs
+  uploadId: 752071

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e13a1902b10e34e9fb08e1d09e39b5d4
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Samples~/Examples/Data/Examples_WaveSpectrum_OpenOcean.asset
+  uploadId: 752071

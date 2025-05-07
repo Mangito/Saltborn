@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: c991a6f7c7bf14d29a1868ab0ba78d9b
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Samples~/Examples/Prefabs/Scenes/Examples_Albedo.prefab
+  uploadId: 752071

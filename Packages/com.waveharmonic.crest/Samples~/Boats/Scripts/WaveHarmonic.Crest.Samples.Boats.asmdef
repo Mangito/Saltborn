@@ -1,0 +1,31 @@
+{
+    "name": "WaveHarmonic.Crest.Samples.Boats",
+    "rootNamespace": "",
+    "references": [
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:7c347618730f5467f86a58f333ce21df"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_2022_3_OR_NEWER",
+        "d_Crest"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.inputsystem",
+            "expression": "",
+            "define": "d_Unity_InputSystem"
+        },
+        {
+            "name": "com.waveharmonic.crest",
+            "expression": "",
+            "define": "d_Crest"
+        }
+    ],
+    "noEngineReferences": false
+}

@@ -1,0 +1,32 @@
+﻿// Crest Water System
+// Copyright © 2024 Wave Harmonic. All rights reserved.
+
+#pragma kernel CrestPackLevel
+
+#include "HLSLSupport.cginc"
+
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Macros.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Constants.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Globals.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/InputsDriven.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Cascade.hlsl"
+
+RWTexture2DArray<float4> _Crest_Target;
+
+m_CrestNameSpace
+
+void PackLevel(uint3 id)
+{
+    float4 displacement = _Crest_Target[id];
+
+    // Previously, in the water shader, we would sample the offset at the displaced
+    // position so we need to do the same here to simulate that.
+    const float2 position = Cascade::MakeAnimatedWaves(id.z).IDToWorld(id.xy);
+    displacement.a = Cascade::MakeLevel(id.z).SampleLevel(position + displacement.xz);
+
+    _Crest_Target[id] = displacement;
+}
+
+m_CrestNameSpaceEnd
+
+m_CrestKernelDefault(PackLevel)

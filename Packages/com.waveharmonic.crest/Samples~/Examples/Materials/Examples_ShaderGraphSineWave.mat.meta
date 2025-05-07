@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8904d567bc07944d693dcc17ff3959bf
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Samples~/Examples/Materials/Examples_ShaderGraphSineWave.mat
+  uploadId: 752071
