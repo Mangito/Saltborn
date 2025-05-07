@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 09672d425b0494ba580cadc6191f0904
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/ThirdPartyNotices.md
+  uploadId: 752071

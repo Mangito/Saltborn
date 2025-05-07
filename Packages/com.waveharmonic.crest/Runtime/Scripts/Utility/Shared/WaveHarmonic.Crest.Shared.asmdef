@@ -1,0 +1,36 @@
+{
+    "name": "WaveHarmonic.Crest.Shared",
+    "rootNamespace": "",
+    "references": [
+        "GUID:df380645f10b7bc4b97d4f5eb6303d95",
+        "GUID:457756d89b35d2941b3e7b37b4ece6f1",
+        "GUID:15fc0a57446b3144c949da3e2b9737a9"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_2022_3_OR_NEWER"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.modules.xr",
+            "expression": "",
+            "define": "d_UnityModuleVR"
+        },
+        {
+            "name": "com.unity.render-pipelines.high-definition",
+            "expression": "",
+            "define": "d_UnityHDRP"
+        },
+        {
+            "name": "com.unity.render-pipelines.universal",
+            "expression": "",
+            "define": "d_UnityURP"
+        }
+    ],
+    "noEngineReferences": false
+}

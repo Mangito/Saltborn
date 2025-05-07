@@ -1,0 +1,124 @@
+// Crest Water System
+// Copyright © 2024 Wave Harmonic. All rights reserved.
+
+#pragma kernel CrestExecute
+
+#include "HLSLSupport.cginc"
+
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Macros.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Constants.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Globals.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Helpers.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/InputsDriven.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Cascade.hlsl"
+
+RWTexture2DArray<float2> _Crest_Target;
+
+CBUFFER_START(CrestPerWaterInput)
+float3 _Crest_Position;
+float3 _Crest_Velocity;
+float _Crest_SimDeltaTime;
+float _Crest_Weight;
+float _Crest_Radius;
+float _Crest_InnerSphereOffset;
+float _Crest_InnerSphereMultiplier;
+float _Crest_LargeWaveMultiplier;
+CBUFFER_END
+
+m_CrestNameSpace
+
+// Resolution-aware interaction falloff function, inspired by "bandfiltered step"
+// from Ottosson. Basically adding together this falloff function at different
+// scales generates a consistent result that doesn't grow into an ugly uintended
+// shape. Shadertoy with more details: https://www.shadertoy.com/view/WltBWM
+float InteractionFalloff(float a, float x)
+{
+    float ax = a * x;
+    float ax2 = ax * ax;
+    float ax4 = ax2 * ax2;
+
+    return ax / (1.0 + ax2 * ax4);
+}
+
+void SphereSDF(float2 offsetXZ, out float sdf, out float2 normal)
+{
+    float distance = length(offsetXZ);
+    sdf = distance - _Crest_Radius;
+    normal = distance > 0.0001 ? offsetXZ / distance : float2(1.0, 0.0);
+}
+
+void Execute(uint3 id)
+{
+    const Cascade cascade = Cascade::MakeDynamicWaves(id.z);
+
+    if (_Crest_LargeWaveMultiplier * _Crest_Radius < cascade._Texel)
+    {
+        return;
+    }
+
+    float2 positionXZ = cascade.IDToWorld(id.xy);
+    float2 offsetXZ = positionXZ - _Crest_Position.xz;
+
+    // Spherical culling. Check diameter for buffered area.
+    if (length(offsetXZ) > _Crest_Radius * 4.0)
+    {
+        return;
+    }
+
+    // Feather at edges of LOD to reduce streaking without reflections.
+    half weight = _Crest_Weight * FeatherWeightFromUV(cascade.WorldToUV(positionXZ).xy, 0.1);
+
+    // Check we are within bounds.
+    if (weight <= 0.0)
+    {
+        return;
+    }
+
+    float minimumWavelength = Cascade::Make(id.z)._MaximumWavelength * 0.5;
+
+    float sdf;
+    float2 sdfNormal;
+    SphereSDF(offsetXZ, sdf, sdfNormal);
+
+    // Push in same direction as velocity inside sphere, and opposite direction outside.
+    float verticalForce = 0.0;
+    {
+        verticalForce = -_Crest_Velocity.y;
+
+        // Range / radius of interaction force
+        const float a = 1.67 / minimumWavelength;
+        verticalForce *= InteractionFalloff( a, sdf );
+    }
+
+    // Push water up in direction of motion, pull down behind.
+    float horizontalForce = 0.0;
+    if (sdf > 0.0 || sdf < -_Crest_Radius * _Crest_InnerSphereOffset)
+    {
+        // Range / radius of interaction force.
+        const float a = 1.43 / minimumWavelength;
+
+        // Invert within sphere, to balance / negate forces applied outside of sphere.
+        float forceSign = sign(sdf);
+
+        horizontalForce = forceSign * dot(sdfNormal, _Crest_Velocity.xz) * InteractionFalloff(a, abs(sdf));
+
+        // If inside sphere, add an additional weight.
+        if (sdf < 0.0)
+        {
+            horizontalForce *= _Crest_InnerSphereMultiplier;
+        }
+    }
+
+    // Add to velocity (y-channel) to accelerate water. Magic number was the default
+    // value for _Strength which has been removed.
+    float acceleration = weight * (verticalForce + horizontalForce) * 0.2;
+
+    // Helps interaction to work at different scales
+    acceleration /= minimumWavelength;
+
+    _Crest_Target[id] = float2(_Crest_Target[id].x, _Crest_Target[id].y + acceleration * _Crest_SimDeltaTime);
+}
+
+m_CrestNameSpaceEnd
+
+m_CrestInputKernelDefault(Execute)

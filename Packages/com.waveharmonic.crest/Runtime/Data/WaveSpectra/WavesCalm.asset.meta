@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2985cdff827b8472bafc9e2da18fbf06
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Runtime/Data/WaveSpectra/WavesCalm.asset
+  uploadId: 752071

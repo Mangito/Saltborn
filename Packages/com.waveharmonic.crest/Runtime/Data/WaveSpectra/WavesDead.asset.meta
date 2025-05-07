@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1c2709c536afb4bf6b90d29d03758f0d
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Runtime/Data/WaveSpectra/WavesDead.asset
+  uploadId: 752071

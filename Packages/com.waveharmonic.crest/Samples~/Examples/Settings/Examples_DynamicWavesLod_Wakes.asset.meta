@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6e347d08403cf4db5bca5da4695cb3bb
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Samples~/Examples/Settings/Examples_DynamicWavesLod_Wakes.asset
+  uploadId: 752071

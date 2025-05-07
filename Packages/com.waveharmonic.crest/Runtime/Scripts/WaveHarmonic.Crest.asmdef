@@ -1,0 +1,76 @@
+{
+    "name": "WaveHarmonic.Crest",
+    "rootNamespace": "",
+    "references": [
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:df380645f10b7bc4b97d4f5eb6303d95",
+        "GUID:457756d89b35d2941b3e7b37b4ece6f1",
+        "GUID:15fc0a57446b3144c949da3e2b9737a9",
+        "GUID:27619889b8ba8c24980f49ee34dbb44a",
+        "GUID:056ff2a5b2f124d468c6655552acdca5",
+        "GUID:1ab2a6c2a51cd4b43867788dbaee1a55",
+        "GUID:2342e6f66b7fd461bb1346f13f99f4a7"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_2022_3_OR_NEWER"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.modules.director",
+            "expression": "",
+            "define": "d_ModuleUnityDirector"
+        },
+        {
+            "name": "com.unity.modules.vr",
+            "expression": "",
+            "define": "d_UnityModuleVR"
+        },
+        {
+            "name": "com.unity.inputsystem",
+            "expression": "",
+            "define": "d_UnityInputSystem"
+        },
+        {
+            "name": "com.unity.render-pipelines.core",
+            "expression": "",
+            "define": "d_UnitySRP"
+        },
+        {
+            "name": "com.unity.render-pipelines.high-definition",
+            "expression": "",
+            "define": "d_UnityHDRP"
+        },
+        {
+            "name": "com.unity.render-pipelines.universal",
+            "expression": "",
+            "define": "d_UnityURP"
+        },
+        {
+            "name": "com.waveharmonic.crest.paint",
+            "expression": "",
+            "define": "d_CrestPaint"
+        },
+        {
+            "name": "com.waveharmonic.crest.splines",
+            "expression": "",
+            "define": "d_CrestSpline"
+        },
+        {
+            "name": "com.waveharmonic.crest.portals",
+            "expression": "",
+            "define": "d_CrestPortals"
+        },
+        {
+            "name": "com.waveharmonic.crest.shifting-origin",
+            "expression": "",
+            "define": "d_WaveHarmonic_Crest_ShiftingOrigin"
+        }
+    ],
+    "noEngineReferences": false
+}

@@ -1,0 +1,47 @@
+// Crest Water System
+// Copyright © 2024 Wave Harmonic. All rights reserved.
+
+// Adds clipping from a provided texture. Used by Painted and Texture input modes.
+
+#pragma kernel CrestExecute
+
+#include "HLSLSupport.cginc"
+
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Macros.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Constants.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Globals.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Helpers.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/InputsDriven.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Cascade.hlsl"
+
+Texture2D _Crest_Texture;
+RWTexture2DArray<float> _Crest_Target;
+
+CBUFFER_START(CrestPerMaterial)
+float2 _Crest_TextureSize;
+float2 _Crest_TexturePosition;
+float2 _Crest_TextureRotation;
+CBUFFER_END
+
+m_CrestNameSpace
+
+void Execute(uint3 id)
+{
+    const Cascade cascade = Cascade::MakeClip(id.z);
+    const float2 uv = DataIDToInputUV(id.xy, cascade, _Crest_TexturePosition, _Crest_TextureRotation, _Crest_TextureSize);
+
+    // Check we are within bounds.
+    if (!WithinUV(uv))
+    {
+        return;
+    }
+
+    const float result = _Crest_Texture.SampleLevel(LODData_linear_clamp_sampler, uv, 0).x;
+
+    // Painted clip defines a minimum value of the clip.
+    _Crest_Target[id] = max(_Crest_Target[id], result);
+}
+
+m_CrestNameSpaceEnd
+
+m_CrestInputKernelDefault(Execute)

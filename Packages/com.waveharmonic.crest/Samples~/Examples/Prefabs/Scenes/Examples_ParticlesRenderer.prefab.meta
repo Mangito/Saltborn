@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: ff1ff3da569614cb085123e4b2d0aa72
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Samples~/Examples/Prefabs/Scenes/Examples_ParticlesRenderer.prefab
+  uploadId: 752071

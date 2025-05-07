@@ -1,0 +1,30 @@
+{
+    "name": "WaveHarmonic.Crest.Scripting",
+    "rootNamespace": "",
+    "references": [
+        "GUID:7c347618730f5467f86a58f333ce21df",
+        "GUID:14c30fdc5e1c1403a8ae14a752f3df85",
+        "GUID:056ff2a5b2f124d468c6655552acdca5",
+        "GUID:1a8679b518d374790a83a275d183e377"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.waveharmonic.crest.splines",
+            "expression": "",
+            "define": "d_CrestSplines"
+        },
+        {
+            "name": "com.waveharmonic.crest.paint",
+            "expression": "",
+            "define": "d_CrestPaint"
+        }
+    ],
+    "noEngineReferences": false
+}

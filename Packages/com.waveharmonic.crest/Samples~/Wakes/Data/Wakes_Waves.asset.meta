@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 30151f29a777a41f39698cb262ee599b
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Samples~/Wakes/Data/Wakes_Waves.asset
+  uploadId: 752071

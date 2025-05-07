@@ -1,0 +1,80 @@
+﻿// Crest Water System
+// Copyright © 2024 Wave Harmonic. All rights reserved.
+
+#pragma kernel CrestUpdateFoam
+
+#include "HLSLSupport.cginc"
+
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Macros.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Constants.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Globals.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/InputsDriven.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Cascade.hlsl"
+
+RWTexture2DArray<float> _Crest_Target;
+
+CBUFFER_START(CrestPerMaterial)
+float _Crest_FoamFadeRate;
+float _Crest_FoamMaximum;
+float _Crest_WaveFoamStrength;
+float _Crest_WaveFoamCoverage;
+float _Crest_ShorelineFoamMaxDepth;
+float _Crest_ShorelineFoamStrength;
+float _Crest_SimDeltaTime;
+float _Crest_SimDeltaTimePrev;
+float _Crest_LodChange;
+bool _Crest_NeedsPrewarming;
+uint _Crest_MinimumWavesSlice;
+float _Crest_FoamNegativeDepthPriming;
+CBUFFER_END
+
+m_CrestNameSpace
+
+void UpdateFoam(uint3 id)
+{
+    const uint slice0 = id.z;
+    const Cascade cascade = Cascade::MakeFoam(slice0);
+    const float2 worldPosXZ = cascade.IDToWorld(id.xy);
+    half foam = 0.0;
+
+    // Sample from previous frame.
+    {
+        const half2 velocity = Cascade::MakeFlow(slice0).SampleFlow(worldPosXZ);
+        const float2 positionXZ = worldPosXZ - _Crest_SimDeltaTime * velocity;
+        // Slice to sample previous frames data from. LOD change takes into account shifting of the cascades in scale.
+        const float sliceIndexSource = clamp(id.z + _Crest_LodChange, 0.0, cascade._Count - 1.0);
+        foam = Cascade::MakeFoamSource(sliceIndexSource).SampleFoamOverflow(positionXZ, 1.0);
+    }
+
+    // fade
+    foam *= max(0.0, 1.0 - _Crest_FoamFadeRate * _Crest_SimDeltaTime);
+
+    // Prewarm wave foam. 1.0 / _Crest_FoamFadeRate perfectly matches a paused water in edit mode, but this is an unnatural
+    // accumulation of foam and causes overshoots when _Crest_WaveFoamStrength is less than 1.0.
+    float simDeltaTime = _Crest_NeedsPrewarming ? max(_Crest_SimDeltaTime, min(1.0, _Crest_WaveFoamStrength - 1.0) / _Crest_FoamFadeRate) : _Crest_SimDeltaTime;
+
+    // The determinant of the displacement Jacobian is a good measure for turbulence.
+    float det;
+    const half3 displacement = Cascade::MakeAnimatedWaves(max(_Crest_MinimumWavesSlice, slice0)).SampleDisplacement(worldPosXZ, det);
+    foam += 5.0 * simDeltaTime * _Crest_WaveFoamStrength * saturate( _Crest_WaveFoamCoverage - det );
+
+    // Prewarm shoreline foam. 1.0 / _Crest_FoamFadeRate perfectly matches a paused water in edit mode which is fine for
+    // shoreline foam.
+    simDeltaTime = _Crest_NeedsPrewarming ? (1.0 / _Crest_FoamFadeRate) : _Crest_SimDeltaTime;
+
+    // Add foam in shallow water. use the displaced position to ensure we add foam where world objects are.
+    const half depth = Cascade::MakeDepth(slice0).SampleSignedDepthFromSeaLevel(worldPosXZ + displacement.xz) + displacement.y;
+    foam += _Crest_ShorelineFoamStrength * simDeltaTime * saturate(1.0 - depth / _Crest_ShorelineFoamMaxDepth);
+
+    // Priming foam when under terrain helps with SWS leading-edge foam.
+    if (depth <= _Crest_FoamNegativeDepthPriming)
+    {
+        foam += simDeltaTime;
+    }
+
+    _Crest_Target[id] = min(foam, _Crest_FoamMaximum);
+}
+
+m_CrestNameSpaceEnd
+
+m_CrestKernelDefault(UpdateFoam)

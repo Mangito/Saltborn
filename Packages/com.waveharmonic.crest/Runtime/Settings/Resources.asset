@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba9588a2660f342409c82a6ff9e95a88, type: 3}
+  m_Name: Resources
+  m_EditorClassIdentifier: 
+  _Shaders:
+    _CopyDepthIntoCache: {fileID: 4800000, guid: cdf2728920d024e9fb0e708e1dc364bb,
+      type: 3}
+    _ColorSpline: {fileID: 4800000, guid: 1e6f7ac69c647420eb778b9c9462c5bb, type: 3}
+    _FlowSpline: {fileID: 4800000, guid: 230c6e038aecf4f4caccc0051e688389, type: 3}
+    _FoamSpline: {fileID: 4800000, guid: 640fd8883ed1b4a549626ac524af06ee, type: 3}
+    _WaveSpline: {fileID: 4800000, guid: 02f1964f0f6a84b73880c00be24ce3f9, type: 3}
+    _DepthGeometry: {fileID: 4800000, guid: a8aeab41790ee4cb1b72e19aa4a7a1ad, type: 3}
+    _LevelGeometry: {fileID: 4800000, guid: 06402bee7075b4b9fafef2b1ddf3b5cc, type: 3}
+    _UpdateShadow: {fileID: 4800000, guid: 6195b173b90b246ac9f5300b7e2aa482, type: 3}
+    _UnderwaterEffect: {fileID: 4800000, guid: 034b985bd9c344992af148e26d2cdb24, type: 3}
+    _UnderwaterMask: {fileID: 4800000, guid: edb653e62cc924b99b0a1086ffb39be7, type: 3}
+    _Portals: {fileID: 4800000, guid: 370ffa403718b4982a8a3e0101263093, type: 3}
+    _ClipConvexHull: {fileID: 4800000, guid: 1f5d1e029c7564da8855bf97e3b9247a, type: 3}
+    _ShallowWaterSimulationVisualizer: {fileID: 4800000, guid: 613caf76dccc3ea45b0501b731a55ec2,
+      type: 3}
+    _DebugTextureArray: {fileID: 4800000, guid: 9984e3507dd424fd49ce01182989250a,
+      type: 3}
+    _Blit: {fileID: 4800000, guid: b9836aaab4b1f45e4bd4fc4e6bcc7e74, type: 3}
+  _Compute:
+    _UnderwaterArtifacts: {fileID: 7200000, guid: 08549c36146ad4899a07193754b21ea2,
+      type: 3}
+    _ShapeWavesTransfer: {fileID: 7200000, guid: 3a487d04e47a14907809657d5ccf1917,
+      type: 3}
+    _Query: {fileID: 7200000, guid: 7089d2ff99e0e4c9a94ef7c4711d5524, type: 3}
+    _Gerstner: {fileID: 7200000, guid: c7470afd2715c48b89d1e4a2a557d6d7, type: 3}
+    _FFT: {fileID: 7200000, guid: a5caa5dfb6d2c4632b41493dc2ba74d0, type: 3}
+    _FFTBake: {fileID: 7200000, guid: 2571926f132e74744ac8563e209947dd, type: 3}
+    _FFTSpectrum: {fileID: 7200000, guid: d493ec731bb6e43dfac22cc5921d31e3, type: 3}
+    _ShapeCombine: {fileID: 7200000, guid: 02a2fc6716dfd4730a8c689ce364f132, type: 3}
+    _ShorelineColor: {fileID: 7200000, guid: 690b406e28d9a4abb842f6e39c9dc582, type: 3}
+    _UpdateDynamicWaves: {fileID: 7200000, guid: 0ba116507793f45b5ba3f016f0837660,
+      type: 3}
+    _UpdateFoam: {fileID: 7200000, guid: 1149a28b1712c464fbc3d96bea0bc34d, type: 3}
+    _PackLevel: {fileID: 7200000, guid: 62854cc297743429aa087d7708d221c0, type: 3}
+    _AbsorptionTexture: {fileID: 7200000, guid: 82d4c3f5aac084c2bad20d0a31f1168a,
+      type: 3}
+    _ClipTexture: {fileID: 7200000, guid: fb559b0e067b5464792b8e434189347c, type: 3}
+    _FlowTexture: {fileID: 7200000, guid: 67ee915fe51504dd894c5cbf6f1a7868, type: 3}
+    _FoamTexture: {fileID: 7200000, guid: 69307e5986e134adc90ee257e7dba1ea, type: 3}
+    _LevelTexture: {fileID: 7200000, guid: 6bccbd92220dc418cacd3f17096c6b97, type: 3}
+    _DepthTexture: {fileID: 7200000, guid: 025c29236eb8341f0a2078d93379be6a, type: 3}
+    _ScatteringTexture: {fileID: 7200000, guid: 78d6b75ecfb664f0cbb70001b1446627,
+      type: 3}
+    _ClipPrimitive: {fileID: 7200000, guid: ad943abdbda794e98b8decce3329fcd8, type: 3}
+    _SphereWaterInteraction: {fileID: 7200000, guid: 98fb0af5d79724a2c945809b974524eb,
+      type: 3}
+    _RenderDepthProbe: {fileID: 7200000, guid: 6bb3e13f5a77e489584dd6fe9dd28a4f, type: 3}
+    _JumpFloodSDF: {fileID: 7200000, guid: 55a9b76c48b7343b2b66ed91a0619c29, type: 3}
+    _UpdateSWS: {fileID: 7200000, guid: 0af900407c415484e8b1482da8ec3881, type: 3}
+    _Whirlpool: {fileID: 7200000, guid: db903c2d7a8274434aa5eef6aa5218f2, type: 3}
+    _Clear: {fileID: 7200000, guid: 2641e78378c244c2e8ac89563a8ec9af, type: 3}

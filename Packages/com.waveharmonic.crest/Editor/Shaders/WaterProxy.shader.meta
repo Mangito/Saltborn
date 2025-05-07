@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 64f548899ca4e4bfab9b53303d8b9c84
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Editor/Shaders/WaterProxy.shader
+  uploadId: 752071

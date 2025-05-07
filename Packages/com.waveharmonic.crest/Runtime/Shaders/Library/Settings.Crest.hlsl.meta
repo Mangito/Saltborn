@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 38f675942a9ca46a58afd1191b304f11
+ShaderIncludeImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Settings.Crest.hlsl
+  uploadId: 752071

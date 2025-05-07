@@ -1,0 +1,63 @@
+// Crest Water System
+// Copyright © 2024 Wave Harmonic. All rights reserved.
+
+// Adds height from a provided texture. Used by Painted and Texture input modes.
+
+#pragma kernel CrestExecute
+
+#pragma multi_compile_local __ d_CatmullRom
+
+#include "HLSLSupport.cginc"
+
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Macros.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Constants.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Globals.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Helpers.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/InputsDriven.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Cascade.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Utility/Filtering.hlsl"
+
+m_DisplacementTexture(Texture2D, 4) _Crest_Texture;
+RWTexture2DArray<float> _Crest_Target;
+
+CBUFFER_START(CrestPerMaterial)
+int _Crest_Blend;
+float _Crest_Weight;
+float2 _Crest_TextureSize;
+float2 _Crest_TexturePosition;
+float2 _Crest_TextureRotation;
+float2 _Crest_Resolution;
+CBUFFER_END
+
+m_CrestNameSpace
+
+void Execute(uint3 id)
+{
+    const Cascade cascade = Cascade::MakeLevel(id.z);
+    const float2 uv = DataIDToInputUV(id.xy, cascade, _Crest_TexturePosition, _Crest_TextureRotation, _Crest_TextureSize);
+
+    half weight = _Crest_Weight;
+
+    // Feather boundaries.
+    weight *= FeatherWeightFromUV(uv, 0.0);
+
+    // Check we are within bounds.
+    if (weight <= 0.0)
+    {
+        return;
+    }
+
+#if d_CatmullRom
+    const float source = Utility::SampleTextureCatmullRom(_Crest_Texture, LODData_linear_clamp_sampler, uv, _Crest_Resolution).x;
+#else
+    const float source = _Crest_Texture.SampleLevel(LODData_linear_clamp_sampler, uv, 0.0).x;
+#endif
+
+    const float target = _Crest_Target[id];
+
+    _Crest_Target[id] = Blend(_Crest_Blend, weight, 1.0, source, target);
+}
+
+m_CrestNameSpaceEnd
+
+m_CrestInputKernelDefault(Execute)

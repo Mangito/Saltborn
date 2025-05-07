@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 28a29b5ef0c644735b5d7ba47d2863d4
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Samples~/Boats/Data/Boats_Waves_Calm.asset
+  uploadId: 752071

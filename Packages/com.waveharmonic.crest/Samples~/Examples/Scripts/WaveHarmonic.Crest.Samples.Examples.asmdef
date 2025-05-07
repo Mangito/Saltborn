@@ -1,0 +1,33 @@
+{
+    "name": "WaveHarmonic.Crest.Samples.Examples",
+    "rootNamespace": "",
+    "references": [
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:7c347618730f5467f86a58f333ce21df",
+        "GUID:056ff2a5b2f124d468c6655552acdca5",
+        "GUID:1ab2a6c2a51cd4b43867788dbaee1a55"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_2022_3_OR_NEWER",
+        "d_Crest"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.inputsystem",
+            "expression": "",
+            "define": "d_Unity_InputSystem"
+        },
+        {
+            "name": "com.waveharmonic.crest",
+            "expression": "",
+            "define": "d_Crest"
+        }
+    ],
+    "noEngineReferences": false
+}

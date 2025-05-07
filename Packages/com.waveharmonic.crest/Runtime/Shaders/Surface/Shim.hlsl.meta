@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a641876bd41254d07831fd1b0b92f99b
+ShaderIncludeImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Runtime/Shaders/Surface/Shim.hlsl
+  uploadId: 752071

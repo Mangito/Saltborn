@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 82d4c3f5aac084c2bad20d0a31f1168a
+ComputeShaderImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Runtime/Shaders/Data/Input/Hidden/AbsorptionTexture.compute
+  uploadId: 752071

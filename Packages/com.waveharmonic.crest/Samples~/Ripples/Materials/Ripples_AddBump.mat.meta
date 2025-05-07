@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1e068bb5f43bd40729e16f7c34c96f91
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Samples~/Ripples/Materials/Ripples_AddBump.mat
+  uploadId: 752071

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 900f04ab6f87d474eaf8c86396dec455
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Shared/Settings/UnderwaterLighting.asset
+  uploadId: 752071

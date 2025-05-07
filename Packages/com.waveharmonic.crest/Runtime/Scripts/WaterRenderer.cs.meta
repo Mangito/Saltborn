@@ -1,0 +1,26 @@
+fileFormatVersion: 2
+guid: e64c239f69eea46778ded6dcc3427a34
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _Camera: {instanceID: 0}
+  - _TimeProvider: {instanceID: 0}
+  - _PrimaryLight: {instanceID: 0}
+  - _Material: {fileID: 2100000, guid: 8ab064b6606504a55b489af2787350c2, type: 2}
+  - _ChunkTemplate: {fileID: 1516456258233481520, guid: 17840562212c147d6bdb5144d35bc442,
+      type: 3}
+  - _Viewpoint: {instanceID: 0}
+  - _Resources: {fileID: 11400000, guid: 0817af17dea584e5382e6216db162d4a, type: 2}
+  executionOrder: 200
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Runtime/Scripts/WaterRenderer.cs
+  uploadId: 752071

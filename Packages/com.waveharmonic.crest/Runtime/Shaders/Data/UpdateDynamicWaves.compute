@@ -1,0 +1,156 @@
+﻿// Crest Water System
+// Copyright © 2024 Wave Harmonic. All rights reserved.
+
+// Solves 2D wave equation
+
+#pragma kernel CrestUpdateDynamicWaves
+
+#include "HLSLSupport.cginc"
+
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Constants.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Globals.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/InputsDriven.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Cascade.hlsl"
+
+RWTexture2DArray<float2> _Crest_Target;
+
+CBUFFER_START(CrestPerMaterial)
+float _Crest_Damping;
+float _Crest_Gravity;
+float _Crest_SimDeltaTime;
+float _Crest_LodChange;
+float _Crest_CourantNumber;
+float _Crest_AttenuationInShallows;
+CBUFFER_END
+
+m_CrestNameSpace
+
+float ComputeWaveSpeed(float wavelength, float g)
+{
+    // wave speed of deep sea water waves: https://en.wikipedia.org/wiki/Wind_wave
+    // https://en.wikipedia.org/wiki/Dispersion_(water_waves)#Wave_propagation_and_dispersion
+    //float g = 9.81; float k = 2. * 3.141593 / wavelength; float cp = sqrt(g / k); return cp;
+    const float one_over_2pi = 0.15915494;
+    return sqrt(wavelength*g*one_over_2pi);
+}
+
+void UpdateDynamicWaves(uint3 id)
+{
+    // Slice to sample previous frames data from. LOD change takes into account shifting of the cascades in scale.
+    const float sliceIndexSource = id.z + _Crest_LodChange;
+    const Cascade cascadeSource = Cascade::MakeDynamicWavesSource(sliceIndexSource);
+
+    // Off either end of the cascade - not useful to sample anything from previous frame. Always initialise
+    // with 0 values.
+    if (sliceIndexSource < 0.0 || sliceIndexSource >= cascadeSource._Count - 1.0)
+    {
+        _Crest_Target[id] = (float2)0;
+        return;
+    }
+
+    const float sliceIndex = id.z;
+    const Cascade cascade = Cascade::MakeDynamicWaves(sliceIndex);
+
+    const float2 worldPosXZ = cascade.IDToWorld(id.xy);
+    const float gridSize = cascade._Texel;
+
+    // Min wavelength for this scale
+    const float wavelength = 2.0 * gridSize;
+    // could make velocity depend on waves
+    //float h = max(waterSignedDepth + ft, 0.);
+    float c = ComputeWaveSpeed(wavelength, _Crest_Gravity);
+
+    const float dt = _Crest_SimDeltaTime;
+
+    // Clamp based on my main man Courant
+    c = min( c, _Crest_CourantNumber * gridSize / dt );
+
+    const half waterDepth = Cascade::MakeDepth(sliceIndex).SampleSignedDepthFromSeaLevel(worldPosXZ) +
+        Cascade::MakeLevel(sliceIndex).SampleLevel(worldPosXZ);
+
+    // Wave reflections off geometry.
+    if (waterDepth <= 0.0)
+    {
+        _Crest_Target[id] = float2(0.0, 0.0);
+        return;
+    }
+
+    const half2 velocity = Cascade::MakeFlow(sliceIndex).SampleFlow(worldPosXZ);
+    const float2 worldPosXZFlowed = worldPosXZ - dt * velocity;
+    const float3 uv_source = cascadeSource.WorldToUV(worldPosXZFlowed);
+
+    // weighting for source position - weight 0 for off texture accesses to stop streaky artifacts
+    float2 distToEdge = min(uv_source.xy, 1.0 - uv_source.xy);
+    // soft, wide feather at boundary to balance reflections vs streaking under motion
+    const float edgeFeather = 0.1;
+    float weightEdge = saturate(min(distToEdge.x, distToEdge.y) / edgeFeather);
+    weightEdge = lerp(0.95, 1.0, weightEdge);
+
+    // compute axes of laplacian kernel - rotated every frame
+    const float e = cascadeSource._OneOverResolution;
+    const float3 X = float3(1.0, 0.0, 0.0);
+    const float3 Y = float3(-X.y, X.x, 0.0);
+
+    // no border wrap mode for RTs in unity it seems,
+    // so make any off-array reads 0 manually
+    const bool insideTarget = sliceIndexSource <= cascadeSource._Count && sliceIndexSource >= 0;
+
+    float fxm, fym, fxp, fyp; float2 ft_v;
+    ft_v = fxm = fym = fxp = fyp = 0.0;
+
+    if (insideTarget)
+    {
+        fxm = cascadeSource.SampleDynamicWaves(uv_source - e * X).x; // x minus
+        fym = cascadeSource.SampleDynamicWaves(uv_source - e * Y).x; // y minus
+        fxp = cascadeSource.SampleDynamicWaves(uv_source + e * X).x; // x plus
+        fyp = cascadeSource.SampleDynamicWaves(uv_source + e * Y).x; // y plus
+        ft_v = cascadeSource.SampleDynamicWaves(uv_source);
+    }
+
+    // wave propagation
+
+    // t - current value before update
+    const float ft = ft_v.x;
+    const float vt = ft_v.y;
+
+    // wave equation
+    float coeff = dt * c * c / (gridSize * gridSize);
+    float vtp = vt + coeff * (fxm + fxp + fym + fyp - 4.0 * ft);
+
+    // damping. works ok at low dts, doesnt damp well at high dts which counter intuitively leads to instabilities, i think.
+    vtp *= 1.0 - min(1.0, _Crest_Damping * dt);
+
+    // dampen towards boundaries smoothly to eliminate reflections and streaking
+    vtp *= weightEdge;
+
+    // integrate velocity onto position
+    float ftp = ft + dt * vtp;
+    ftp *= weightEdge;
+
+    if (_Crest_AttenuationInShallows > 0.0)
+    {
+        // attenuate waves based on water depth. if depth is greater than 0.5*wavelength, water is considered Deep and wave is
+        // unaffected. if depth is less than this, wave velocity decreases. waves will then bunch up and grow in amplitude and
+        // eventually break. i model "Deep" water, but then simply ramp down waves in non-deep water with a linear multiplier.
+        // http://hyperphysics.phy-astr.gsu.edu/hbase/Waves/watwav2.html
+        // http://hyperphysics.phy-astr.gsu.edu/hbase/watwav.html#c1
+        const float depthMul = 1.0 - (1.0 - saturate(2.0 * waterDepth / wavelength)) * dt * 2.0;
+        ftp *= _Crest_AttenuationInShallows * depthMul + (1.0 - _Crest_AttenuationInShallows);
+    }
+
+    // Clear for safety as there is a potential for bad values which will propagate throughout the entire simulation.
+    // Zero is not ideal but better than bad values. Cases:
+    // - bad values randomly being sampled from the source texture, but ostensibly not injected by an input
+    // - bad values sometimes appearing after an hour or so runtime
+    if (!isfinite(ftp) || !isfinite(vtp))
+    {
+        ftp = 0.0;
+        vtp = 0.0;
+    }
+
+    _Crest_Target[id] = float2(ftp, vtp);
+}
+
+m_CrestNameSpaceEnd
+
+m_CrestKernelDefault(UpdateDynamicWaves)

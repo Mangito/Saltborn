@@ -1,0 +1,61 @@
+// Crest Water System
+// Copyright © 2024 Wave Harmonic. All rights reserved.
+
+// Checks both orthogonal and diagonal pixels to fill artefacts in the mask. If checked pixels are all the same then it
+// assumes that the current pixel should also be the same and fixes it.
+
+#pragma kernel FillMaskArtefacts
+
+// Built-in will not handle this for us unlike other RPs.
+#pragma multi_compile __ STEREO_INSTANCING_ON
+
+#include "UnityCG.cginc"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Utility/Legacy/Core.hlsl"
+
+RW_TEXTURE2D_X(float, _Crest_WaterMaskTexture);
+
+[numthreads(8, 8, 1)]
+void FillMaskArtefacts(const uint3 id : SV_DispatchThreadID)
+{
+    UNITY_XR_ASSIGN_VIEW_INDEX(id.z);
+
+    const uint3 offset = uint3(1, -1, 0);
+
+    // Check orthogonal pixels.
+    {
+        const float4 pixels = float4
+        (
+            _Crest_WaterMaskTexture[COORD_TEXTURE2D_X(id.xy + offset.xz)],
+            _Crest_WaterMaskTexture[COORD_TEXTURE2D_X(id.xy + offset.yz)],
+            _Crest_WaterMaskTexture[COORD_TEXTURE2D_X(id.xy + offset.zy)],
+            _Crest_WaterMaskTexture[COORD_TEXTURE2D_X(id.xy + offset.zx)]
+        );
+
+        // If these pixels are all the same, then it is valid that this pixel also equals them.
+        if (pixels.x == pixels.y && pixels.y == pixels.z && pixels.z == pixels.w)
+        {
+            _Crest_WaterMaskTexture[COORD_TEXTURE2D_X(id.xy)] = pixels.x;
+            return;
+        }
+    }
+
+    // Check diagonal pixels.
+    {
+        const float4 pixels = float4
+        (
+            _Crest_WaterMaskTexture[COORD_TEXTURE2D_X(id.xy + offset.xx)],
+            _Crest_WaterMaskTexture[COORD_TEXTURE2D_X(id.xy + offset.yy)],
+            _Crest_WaterMaskTexture[COORD_TEXTURE2D_X(id.xy + offset.xy)],
+            _Crest_WaterMaskTexture[COORD_TEXTURE2D_X(id.xy + offset.yx)]
+        );
+
+        // If these pixels are all the same, then it is valid that this pixel also equals them.
+        if (pixels.x == pixels.y && pixels.y == pixels.z && pixels.z == pixels.w)
+        {
+            _Crest_WaterMaskTexture[COORD_TEXTURE2D_X(id.xy)] = pixels.x;
+            return;
+        }
+    }
+
+    _Crest_WaterMaskTexture[COORD_TEXTURE2D_X(id.xy)] = _Crest_WaterMaskTexture[COORD_TEXTURE2D_X(id.xy)];
+}

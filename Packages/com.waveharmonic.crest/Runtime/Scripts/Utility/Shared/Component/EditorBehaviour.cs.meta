@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 4f9b0b7f0a05449e4952db2c0e3a5516
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Runtime/Scripts/Utility/Shared/Component/EditorBehaviour.cs
+  uploadId: 752071

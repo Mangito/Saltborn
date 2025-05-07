@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 74c8f2f95ac074785be75df0fde34cdb
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Samples~/Boats/Prefabs/Boats_OceanLiner.prefab
+  uploadId: 752071

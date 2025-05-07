@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: f2a407448acc440bab3414c17e06e7ba
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _VolumeGeometry: {instanceID: 0}
+  - _EffectMaterial: {instanceID: 0}
+  - _MaskMaterial: {instanceID: 0}
+  - _VolumeMaterial: {instanceID: 0}
+  - _ArtifactsShader: {fileID: 7200000, guid: 08549c36146ad4899a07193754b21ea2, type: 3}
+  executionOrder: 201
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Runtime/Scripts/Volume/UnderwaterRenderer.cs
+  uploadId: 752071

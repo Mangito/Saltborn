@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6b50b5218dbe2488fb5d00db49d15dae
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268614
+  packageName: Crest Water 5 (Oceans, Rivers, Lakes)
+  packageVersion: 5.4.2
+  assetPath: Packages/com.waveharmonic.crest/Samples~/Examples/Data/Examples_WaveSpectrum_Trochoidal.asset
+  uploadId: 752071

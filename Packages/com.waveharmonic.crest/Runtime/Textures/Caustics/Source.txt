@@ -1,0 +1,3 @@
+Source: https://forums.unrealengine.com/t/water-caustics/28155
+Download: http://i2.photobucket.com/albums/y43/8thMan/Caustics_tex_zpsc0xyvivw.png
+Modifications: Modified to add separation in colour channels.

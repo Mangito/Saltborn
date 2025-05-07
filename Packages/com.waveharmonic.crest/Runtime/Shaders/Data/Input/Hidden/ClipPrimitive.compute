@@ -1,0 +1,97 @@
+// Crest Water System
+// Copyright © 2024 Wave Harmonic. All rights reserved.
+
+#pragma kernel CrestExecute
+
+#pragma multi_compile_local d_Sphere d_Cube d_Rectangle
+#pragma multi_compile_local __ d_Inverted
+
+#include "HLSLSupport.cginc"
+
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Constants.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Globals.hlsl"
+#include "Packages/com.waveharmonic.crest/Runtime/Shaders/Library/Cascade.hlsl"
+
+RWTexture2DArray<float1> _Crest_Target;
+
+CBUFFER_START(CrestPerMaterial)
+float3 _Crest_Position;
+float  _Crest_Diameter;
+float4x4 _Crest_Matrix;
+CBUFFER_END
+
+m_CrestNameSpace
+
+// Also covers elipsoids etc.
+float SphereSDF(float3 position)
+{
+    // Distance from center.
+    return length(position);
+}
+
+// Also covers rectangular prisms etc.
+float CubeSDF(float3 position)
+{
+    // Restrict to one quadrant of a box.
+    position = abs(position);
+    // Get furthest distance from center.
+    return max(position.x, max(position.y, position.z));
+}
+
+float RectangleSDF(float2 position)
+{
+    // Restrict to one quadrant of a box.
+    position = abs(position);
+    // Get furthest distance from center.
+    return max(position.x, position.y);
+}
+
+void Execute(uint3 id)
+{
+    const Cascade cascade = Cascade::MakeClip(id.z);
+    const float2 positionXZ = cascade.IDToWorld(id.xy);
+
+    // TODO: Optimize with something better than spherical culling.
+    // Spherical culling. Check diameter for buffered area.
+    if (length(positionXZ - _Crest_Position.xz) > _Crest_Diameter)
+    {
+        return;
+    }
+
+    float3 position = 0.0;
+    position.xz = positionXZ;
+
+#if !d_Rectangle
+    // Only need height as clip surface is sampled at the displaced position.
+    const float3 surface = Cascade::MakeAnimatedWaves(id.z).SampleDisplacementFromUndisplaced(positionXZ);
+    position.y = g_Crest_WaterCenter.y + surface.y;
+#endif
+
+    // SDF operate in local space.
+    position = mul(_Crest_Matrix, float4(position, 1.0)).xyz;
+
+    float sdf = 0;
+
+#if d_Sphere
+    sdf = SphereSDF(position);
+#endif
+
+#if d_Cube
+    sdf = CubeSDF(position);
+#endif
+
+#if d_Rectangle
+    sdf = RectangleSDF(position.xz);
+#endif
+
+#if d_Inverted
+    _Crest_Target[id.xyz] = min(_Crest_Target[id.xyz], sdf);
+#else
+    sdf = 1.0 - sdf;
+    _Crest_Target[id.xyz] = max(_Crest_Target[id.xyz], sdf);
+#endif
+}
+
+m_CrestNameSpaceEnd
+
+m_CrestInputKernelDefault(Execute)
