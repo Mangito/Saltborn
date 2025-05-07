@@ -12,9 +12,19 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _FULL_SCREEN_EFFECT
   - d_Dithering
   - d_Meniscus
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _ALPHATEST_ON
+  - _BUILTIN_ALPHATEST_ON
+  - _BUILTIN_AlphaClip
+  - _BUILTIN_SURFACE_TYPE_TRANSPARENT
+  - _DOUBLESIDED_ON
+  - _ENABLE_FOG_ON_TRANSPARENT
+  - _SPECULAR_SETUP
+  - _SURFACE_TYPE_TRANSPARENT
+  - _TRANSPARENT_WRITES_MOTION_VEC
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -26,11 +36,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Crest_CausticsDistortionTexture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 7aa3f69cfb40b429a865c45a7271c5f5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Crest_CausticsTexture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 1407209016967410da2ae6fdd4d97fc6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints:
@@ -48,6 +58,7 @@ Material:
     - _Crest_CausticsEnabled: 1
     - _Crest_CausticsFocalDepth: 2
     - _Crest_CausticsMotionBlur: 1
+    - _Crest_CausticsScrollSpeed: 1
     - _Crest_CausticsStrength: 3.2
     - _Crest_CausticsTextureAverage: 0.07
     - _Crest_CausticsTextureScale: 50
@@ -56,8 +67,10 @@ Material:
     - _Crest_ExtinctionMultiplier: 1
     - _Crest_OutScatteringExtinctionFactor: 0.2
     - _Crest_OutScatteringFactor: 0.2
+    - _Crest_ShadowsAffectsAmbientFactor: 0.5
     - _Crest_SunBoost: 2
     m_Colors:
     - _Crest_AbsorptionColor: {r: 0.34162676, g: 0.6954546, b: 0.85, a: 0.1019608}
     - _Crest_Scattering: {r: 0, g: 0.09803919, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1
