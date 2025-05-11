@@ -2,15 +2,22 @@ using UnityEngine;
 
 public class Cannonball : MonoBehaviour
 {
-    [SerializeField] private float lifespan = 10f;
+    [SerializeField] float lifespan = 10f;
+    [SerializeField] float damage = 20f;
 
-    private void Start()
+     void Start()
     {
         Destroy(gameObject, lifespan);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
+        ShipHealth ship = other.GetComponentInParent<ShipHealth>();
+        if (ship != null)
+        {
+            ship.TakeDamage(damage);
+        }
+
         Destroy(gameObject);
     }
 }
