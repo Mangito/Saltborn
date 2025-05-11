@@ -5,7 +5,7 @@ using System.Reflection;
 public class CrestWaveController : MonoBehaviour
 {
     [Header("Target object with ShapeFFT & ShapeWaves (usually 'WaveManager')")]
-    public GameObject waveManager;
+    [SerializeField] GameObject waveManager;
 
     ShapeFFT _shapeFFT;
     ShapeWaves _shapeWaves;

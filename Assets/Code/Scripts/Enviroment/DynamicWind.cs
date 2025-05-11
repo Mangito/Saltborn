@@ -31,6 +31,13 @@ public class DynamicWind : MonoBehaviour
     [Range(0f, 1f)]
     [SerializeField] float turbulence = 1f;
 
+    [Header("Preset Probabilities")]
+
+    [Tooltip("Probability (0-1) for each wind preset")]
+    [SerializeField] private float calmProbability = 0.05f;
+    [SerializeField] private float normalProbability = 0.50f;
+    [SerializeField] private float choppyProbability = 0.80f;
+
     [Header("Crest Wave Control")]
     public CrestWaveController crestWaveController;
 
@@ -111,9 +118,9 @@ public class DynamicWind : MonoBehaviour
     {
         float r = Random.value;
 
-        if (r < 0.05f) return WindPreset.Calm;
-        if (r < 0.50f) return WindPreset.Choppy;
-        if (r < 0.80f) return WindPreset.Normal;
+        if (r < calmProbability) return WindPreset.Calm;
+        if (r < normalProbability) return WindPreset.Choppy;
+        if (r < choppyProbability) return WindPreset.Normal;
         return WindPreset.Storm;
     }
 
