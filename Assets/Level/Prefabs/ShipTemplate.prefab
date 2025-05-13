@@ -217,8 +217,8 @@ GameObject:
   - component: {fileID: 6969238004190679423}
   - component: {fileID: 3258380091067900332}
   - component: {fileID: 4809229912313628882}
-  - component: {fileID: 6625992263670749066}
-  - component: {fileID: 7334877816045122040}
+  - component: {fileID: 4856698286372228419}
+  - component: {fileID: 4615398676418266622}
   m_Layer: 0
   m_Name: ShipTemplate
   m_TagString: Untagged
@@ -402,7 +402,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 0.99999994}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6625992263670749066
+--- !u!114 &4856698286372228419
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -418,7 +418,7 @@ MonoBehaviour:
   turnSpeed: 50
   maxSpeed: 10
   waterDrag: 2
---- !u!114 &7334877816045122040
+--- !u!114 &4615398676418266622
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -431,9 +431,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  isSinking: 0
-  sinkSpeed: 0.5
-  rotationSpeed: 15
+  currentHealth: 0
 --- !u!1001 &347955702872020420
 PrefabInstance:
   m_ObjectHideFlags: 0
