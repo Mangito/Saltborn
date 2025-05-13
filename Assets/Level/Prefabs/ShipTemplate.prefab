@@ -218,6 +218,7 @@ GameObject:
   - component: {fileID: 3258380091067900332}
   - component: {fileID: 4809229912313628882}
   - component: {fileID: 4856698286372228419}
+  - component: {fileID: 4615398676418266622}
   m_Layer: 0
   m_Name: ShipTemplate
   m_TagString: Untagged
@@ -417,6 +418,20 @@ MonoBehaviour:
   turnSpeed: 50
   maxSpeed: 10
   waterDrag: 2
+--- !u!114 &4615398676418266622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7836053894381382209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2c0eed13d38c764aae75a03262691cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
 --- !u!1001 &347955702872020420
 PrefabInstance:
   m_ObjectHideFlags: 0
